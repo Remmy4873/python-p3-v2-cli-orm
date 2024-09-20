@@ -1,75 +1,90 @@
-
+import logging
 from helpers import (
-    exit_program,
-    list_departments,
-    find_department_by_name,
-    find_department_by_id,
-    create_department,
-    update_department,
-    delete_department,
-    list_employees,
-    find_employee_by_name,
-    find_employee_by_id,
-    create_employee,
-    update_employee,
-    delete_employee,
-    list_department_employees
+    create_region,
+    update_region,
+    delete_region,
+    create_personnel,
+    delete_personnel,
+    find_personnel_by_name,
+    list_personnel_by_county,
+    list_personnel_by_constituency,
+    update_personnel_contacts,
+    find_personnel_by_profession  # Import the new function
 )
 
+# Suppress SQLAlchemy log messages
+logging.getLogger('sqlalchemy.engine').setLevel(logging.WARNING)
 
 def main():
     while True:
-        menu()
+        print("\nPlease select an option:")
+        print("0. Exit the program")
+        print("1: Create region")
+        print("2: Update region")
+        print("3: Delete region")
+        print("4. Find personnel by name")
+        print("5: Create personnel")
+        print("6: Update personnel contacts")
+        print("7: Delete personnel")
+        print("8: List all personnel in a county")
+        print("9: List all personnel in a constituency")
+        print("10: Search personnel by profession")  # New option for profession search
+
         choice = input("> ")
+
         if choice == "0":
-            exit_program()
+            break
         elif choice == "1":
-            list_departments()
+            constituency = input("Enter the region's constituency: ")
+            county = input("Enter the region's county: ")
+            create_region(constituency, county)
+            input("Press Enter to return to the menu...")
         elif choice == "2":
-            find_department_by_name()
+            region_id = input("Enter the region's id: ")
+            constituency = input("Enter the new constituency: ")
+            county = input("Enter the new county: ")
+            update_region(region_id, constituency, county)
+            input("Press Enter to return to the menu...")
         elif choice == "3":
-            find_department_by_id()
+            region_id = input("Enter the region's id: ")
+            delete_region(region_id)
+            input("Press Enter to return to the menu...")
         elif choice == "4":
-            create_department()
+            name = input("Enter the personnel's name: ")
+            find_personnel_by_name(name)
+            input("Press Enter to return to the menu...")
         elif choice == "5":
-            update_department()
+            name = input("Enter the personnel's name: ")
+            profession = input("Enter the personnel's profession: ")
+            contacts = input("Enter the personnel's contacts: ")
+            email = input("Enter the personnel's email: ")
+            region_id = input("Enter the region id for the personnel: ")
+            create_personnel(name, profession, contacts, email, region_id)
+            input("Press Enter to return to the menu...")
         elif choice == "6":
-            delete_department()
+            personnel_id = input("Enter the personnel's id: ")
+            new_contacts = input("Enter the new contacts: ")
+            update_personnel_contacts(personnel_id, new_contacts)
+            input("Press Enter to return to the menu...")
         elif choice == "7":
-            list_employees()
+            personnel_id = input("Enter the personnel's id: ")
+            delete_personnel(personnel_id)
+            input("Press Enter to return to the menu...")
         elif choice == "8":
-            find_employee_by_name()
+            county = input("Enter the county: ")
+            list_personnel_by_county(county)
+            input("Press Enter to return to the menu...")
         elif choice == "9":
-            find_employee_by_id()
-        elif choice == "10":
-            create_employee()
-        elif choice == "11":
-            update_employee()
-        elif choice == "12":
-            delete_employee()
-        elif choice == "13":
-            list_department_employees()
+            constituency = input("Enter the constituency: ")
+            list_personnel_by_constituency(constituency)
+            input("Press Enter to return to the menu...")
+        elif choice == "10":  # New search by profession option
+            profession = input("Enter the profession: ")
+            find_personnel_by_profession(profession)
+            input("Press Enter to return to the menu...")
         else:
-            print("Invalid choice")
-
-
-def menu():
-    print("Please select an option:")
-    print("0. Exit the program")
-    print("1. List all departments")
-    print("2. Find department by name")
-    print("3. Find department by id")
-    print("4: Create department")
-    print("5: Update department")
-    print("6: Delete department")
-    print("7. List all employees")
-    print("8. Find employee by name")
-    print("9. Find employee by id")
-    print("10: Create employee")
-    print("11: Update employee")
-    print("12: Delete employee")
-    print("13: List all employees in a department")
-
+            print("Invalid choice, please try again.")
+            input("Press Enter to return to the menu...")
 
 if __name__ == "__main__":
     main()
